@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
@@ -6,6 +7,11 @@ public class Spawner : MonoBehaviour
 {
     public GameObject Prefab;
     public float Frequency;
+
+    // private void Awake()
+    // {
+    //     if (!IsServer) gameObject.SetActive(false); 
+    // }
 
     private void OnServerStarted()
     {
