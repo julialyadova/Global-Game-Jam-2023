@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using Unity.Netcode;
+using Unity.Netcode.Transports.UNET;
 using Unity.Netcode.Transports.UTP;
 using Unity.Services.Authentication;
 #if ENABLE_RELAY_SERVICE
@@ -219,6 +220,39 @@ public class ConnectionModeScript : MonoBehaviour
         NetworkManager.Singleton.StartClient();
         OnNotifyConnectionEventClient?.Invoke();
         m_ConnectionModeButtons.SetActive(false);
+    }
+    
+    /// <summary>
+    /// Handles host address input
+    /// </summary>
+    public void OnHostAddressInput(string address)
+    {
+        if (NetworkManager.Singleton)
+        {
+            NetworkManager.Singleton.GetComponent<UNetTransport>().ConnectAddress = address;
+        }
+    }
+    
+    /// <summary>
+    /// Handles host port input
+    /// </summary>
+    public void OnHostPortInput(string input)
+    {
+        if (NetworkManager.Singleton && int.TryParse(input, out var port))
+        {
+            NetworkManager.Singleton.GetComponent<UNetTransport>().ConnectPort = port;
+        }
+    }
+    
+    // <summary>
+    /// Handles host port input
+    /// </summary>
+    public void OnMaxPlayersInput(string input)
+    {
+        if (NetworkManager.Singleton && int.TryParse(input, out var maxConnections))
+        {
+            NetworkManager.Singleton.GetComponent<UNetTransport>().MaxConnections = maxConnections;
+        }
     }
 
 
