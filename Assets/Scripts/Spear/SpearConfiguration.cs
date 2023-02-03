@@ -10,6 +10,6 @@ public class SpearConfiguration : MonoBehaviour
     void Start()
     {
         gameObject.GetComponent<Rigidbody>().centerOfMass = centerOfAMass;
-        gameObject.GetComponent<Rigidbody>().AddForce(Vector3.forward * 45, ForceMode.Impulse);
+        gameObject.GetComponent<Rigidbody>().AddForce(transform.forward * 45, ForceMode.Impulse);
     }
 }
