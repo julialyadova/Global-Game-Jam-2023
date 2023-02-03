@@ -3,7 +3,7 @@ using Unity.Netcode;
 using UnityEngine;
 using UnityEngine.Serialization;
 
-public class PlayerSpearThrower : MonoBehaviour
+public class PlayerSpearThrower : NetworkBehaviour
 {
     [FormerlySerializedAs("SpearPrefab")] 
     public GameObject spearPrefab;
@@ -23,9 +23,16 @@ public class PlayerSpearThrower : MonoBehaviour
     
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetKeyDown(KeyCode.Mouse0) && IsOwner)
         {
-            ThrowASpear();
+            if (IsServer)
+            {
+                SpawnSpear();
+            }
+            else
+            {
+                SpawnSpearServerRpc();
+            }
         }
     }
     
@@ -38,12 +45,18 @@ public class PlayerSpearThrower : MonoBehaviour
         }
     }
 
-    private void ThrowASpear()
+    private void SpawnSpear()
     {
         var spear = Instantiate(spearPrefab, transform.position, transform.rotation);
         var networkObject = spear.GetComponent<NetworkObject>();
         networkObject.Spawn();
         
         spear.GetComponent<Rigidbody>().AddForce(transform.forward * Force, ForceMode.Impulse);
+    }
+
+    [ServerRpc]
+    private void SpawnSpearServerRpc()
+    {
+        SpawnSpear();
     }
 }
