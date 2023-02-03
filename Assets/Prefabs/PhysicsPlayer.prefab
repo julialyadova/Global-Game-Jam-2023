@@ -17,7 +17,6 @@ GameObject:
   - component: {fileID: 7005976566058677208}
   - component: {fileID: -4153120973450435229}
   - component: {fileID: 1026472173879860628}
-  - component: {fileID: 7799485282512738288}
   m_Layer: 8
   m_Name: PhysicsPlayer
   m_TagString: Player
@@ -188,22 +187,53 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6c0be61502bb534f922ebb746851216, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!114 &7799485282512738288
+--- !u!1 &8915429210799269657
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1518185452084686455}
+  - component: {fileID: 5992800804367856379}
+  m_Layer: 0
+  m_Name: SpearThrower
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1518185452084686455
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8915429210799269657}
+  m_LocalRotation: {x: -0.08715578, y: 0, z: 0, w: 0.9961947}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 3092378794916513860}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: -10, y: 0, z: 0}
+--- !u!114 &5992800804367856379
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4079352819444256614}
+  m_GameObject: {fileID: 8915429210799269657}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: a9a94d1c0a82d0d46b8cbe08e1f36155, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spearPrefab: {fileID: 5638755953236930751, guid: dbb12db891440c84a8c50394d9e69d53, type: 3}
+  spearPrefab: {fileID: 5638755953236930751, guid: e6d002af9cab610498eb1c072d30555c, type: 3}
   throwsPerSecond: 1
-  m_Thrust: 20
-  shootPoint: {fileID: 0}
+  Force: 20
 --- !u!1001 &6603789944961113817
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -259,7 +289,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 8164755465470154396, guid: 964e333106fe44e438123c6602256f71, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 964e333106fe44e438123c6602256f71, type: 3}
 --- !u!4 &3092378794916513860 stripped
 Transform:

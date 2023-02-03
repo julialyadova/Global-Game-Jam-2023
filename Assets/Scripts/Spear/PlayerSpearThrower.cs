@@ -10,14 +10,15 @@ public class PlayerSpearThrower : MonoBehaviour
 
     [FormerlySerializedAs("ThrowsPerSecond")] 
     public float throwsPerSecond = 1;
-    public float m_Thrust = 20f;
+    public float Force = 20f;
     private bool _canThrow = false;
 
-    public Transform shootPoint;
+    private Transform _shootPoint;
     
     void Start()
     {
         StartCoroutine(ThrowASpearRoutine());
+        _shootPoint = transform;
     }
     
     void Update()
@@ -39,8 +40,10 @@ public class PlayerSpearThrower : MonoBehaviour
 
     private void ThrowASpear()
     {
-        var go = Instantiate(spearPrefab, shootPoint.position, shootPoint.rotation);
-//        var networkObject = go.GetComponent<NetworkObject>();
-//        networkObject.Spawn();
+        var spear = Instantiate(spearPrefab, transform.position, transform.rotation);
+        var networkObject = spear.GetComponent<NetworkObject>();
+        networkObject.Spawn();
+        
+        spear.GetComponent<Rigidbody>().AddForce(transform.forward * Force, ForceMode.Impulse);
     }
 }
