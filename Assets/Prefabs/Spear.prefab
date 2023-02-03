@@ -234,6 +234,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Head: {fileID: 6309807361876280258}
   HeadRaycastDistance: 0.4
+  BaseDamage: 10
+  SpeedDamageMultiplier: 0.5
 --- !u!114 &6713298443155223622
 MonoBehaviour:
   m_ObjectHideFlags: 0
