@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Unity.Netcode;
 using UnityEngine;
 using Unity.Netcode.Components;
 using UnityEngine.Serialization;
@@ -133,15 +134,16 @@ public class PlayerMovement : NetworkTransform
         }
         else
         {
-            var rotationHead = transform.rotation;
+            var rotationHead = playerHead.rotation;
             var eulerHead = rotationHead.eulerAngles;
             eulerHead.x -= Input.GetAxis("Mouse Y") * 90 * RotSpeedY * Time.fixedDeltaTime;
             rotationHead.eulerAngles = eulerHead;
-            transform.rotation = rotationHead;
+            playerHead.rotation = rotationHead;
             
             var inputX = Input.GetAxis("Vertical");
-            animator.SetBool("IsWalking", Mathf.Abs(inputX) > 0.5f);
-
+            
+            HandleAnimationServerRpc(Mathf.Abs(inputX) > 0.5f);
+            
             transform.position = Vector3.Lerp(transform.position, transform.position + Input.GetAxis("Vertical") * Speed * transform.forward, Time.fixedDeltaTime);
             var rotation = transform.rotation;
             var euler = rotation.eulerAngles;
@@ -155,5 +157,11 @@ public class PlayerMovement : NetworkTransform
             /// We store this to handle a collision rotation issue: <see cref="Teleport(Vector3, Quaternion, Vector3)"/>
             m_PreviousRotation = transform.rotation;
         }
+    }
+    
+    [ServerRpc]
+    private void HandleAnimationServerRpc(bool flag)
+    {
+        animator.SetBool("IsWalking", flag);
     }
 }
