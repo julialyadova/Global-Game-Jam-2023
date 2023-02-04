@@ -19,6 +19,15 @@ public class PlayerSpearThrower : NetworkBehaviour
 
     private Transform _shootPoint;
     
+    public float ForceGrowSpeed = 18f;
+    
+    public float MinForce = 3f;
+     
+    public float MaxForce = 20f;
+    
+    [SerializeField]
+    private float _force = 0;
+    
     void Start()
     {
         StartCoroutine(ThrowASpearRoutine());
@@ -27,16 +36,32 @@ public class PlayerSpearThrower : NetworkBehaviour
     
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Mouse0) && IsOwner)
+        if (!IsOwner)
+            return;
+        
+        
+        if (Input.GetKeyUp(KeyCode.Mouse0))
         {
-            if (IsServer)
+            if (Force >= MinForce)
             {
-                SpawnSpear();
+                if (IsServer)
+                {
+                    SpawnSpear(Force);
+                }
+                else
+                {
+                    SpawnSpearServerRpc(Force);
+                }
             }
-            else
-            {
-                SpawnSpearServerRpc();
-            }
+            Force = 0;
+        }
+
+        if (Input.GetKey(KeyCode.Mouse0) && Force <= MaxForce)
+        {
+            Force += Time.deltaTime * ForceGrowSpeed;
+            if (Force > MaxForce) Force = MaxForce;
+
+            Debug.Log(Force);
         }
     }
     
@@ -49,19 +74,20 @@ public class PlayerSpearThrower : NetworkBehaviour
         }
     }
 
-    private void SpawnSpear()
+    private void SpawnSpear(float throwForce)
     {
         var spear = Instantiate(spearPrefab, transform.position, transform.rotation);
         var networkObject = spear.GetComponent<NetworkObject>();
         networkObject.Spawn();
         
-        spear.GetComponent<Rigidbody>().AddForce(transform.forward * Force, ForceMode.Impulse);
+        spear.GetComponent<Rigidbody>().AddForce(transform.forward * throwForce, ForceMode.Impulse);
     }
 
     [ServerRpc]
-    private void SpawnSpearServerRpc()
+    private void SpawnSpearServerRpc(float throwForce)
     {
-        SpawnSpear();
+        SpawnSpear(throwForce);
+        Debug.Log("Sercer RPC - throw force = " + throwForce);
     }
 }
 //
