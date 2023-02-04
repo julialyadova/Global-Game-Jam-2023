@@ -3,8 +3,14 @@ using UnityEngine;
 
 public class PlayerCamera : NetworkBehaviour
 {
+    [SerializeField]
+    private GameObject _camera;
+    
     void Start()
     {
-        if(!IsOwner) GameObject.Find("Main Camera").SetActive(false);
+        if (!IsOwner)
+        {
+            _camera.SetActive(false);
+        }
     }
 }
