@@ -297,7 +297,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ignoreTree: 0
-  ignoreCreatures: 0
+  ignoreCreatures: 1
   ignorePlayers: 0
   damageIntervalInSeconds: 1
   damageAmountPerCall: 10

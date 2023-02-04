@@ -8,6 +8,10 @@ public class Spawner : MonoBehaviour
     public GameObject Prefab;
     public float Frequency;
 
+    public int maxCount = 10;
+
+    private int _currentCount = 0;
+
     // private void Awake()
     // {
     //     if (!IsServer) gameObject.SetActive(false); 
@@ -23,9 +27,15 @@ public class Spawner : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(Frequency);
+            
+            if(_currentCount >= maxCount)
+                continue;
+            
             var go = Instantiate(Prefab, transform.position, Quaternion.identity);
             var networkObject = go.GetComponent<NetworkObject>();
             networkObject.Spawn();
+
+            _currentCount++;
         }
     }
 
