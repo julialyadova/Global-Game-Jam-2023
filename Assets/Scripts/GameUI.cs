@@ -10,7 +10,7 @@ public class GameUI : MonoBehaviour
     public static GameUI Singletone { get; private set; }
     
     [SerializeField]
-    private TMP_Text Health;
+    private HealthIndicator Health;
 
     public GameUI()
     {
@@ -19,6 +19,6 @@ public class GameUI : MonoBehaviour
 
     public void SetHealth(int value)
     {
-        Health.text = value.ToString();
+        Health.SetValue(value);
     }
 }
