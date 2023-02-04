@@ -16,6 +16,8 @@ namespace TestProject.ManualTests
             MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
             ulong myId = GetComponent<NetworkObject>().OwnerClientId;
             meshRenderer.material.color = s_Colors[myId % Convert.ToUInt64(s_Colors.Length)];
+            
+            GetComponent<PlayerMovement>().Telporting(new Vector3(0,10.5f, 0));
         }
     }
 }

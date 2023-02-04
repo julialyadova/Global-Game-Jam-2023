@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Tree
   - Creature
+  - DamageZone
   layers:
   - Default
   - TransparentFX
