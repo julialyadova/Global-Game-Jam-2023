@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
-using Unity.Netcode;
 using Unity.Netcode.Components;
+using UnityEngine.Serialization;
 
 
 public class PlayerMovement : NetworkTransform
@@ -9,8 +9,16 @@ public class PlayerMovement : NetworkTransform
     public float Speed = 4.0f;
 
     public float RotSpeed = 1.0f;
+    
+    public float RotSpeedY = 0.6f;
 
     private Rigidbody m_Rigidbody;
+
+    public Animator animator;
+
+    public Transform playerHead;
+    
+    [FormerlySerializedAs("ChestTransform")] public Transform chestTransform;
 
     /// Used by <see cref="GrabbableBall"/>
     public static Dictionary<ulong, PlayerMovement> Players = new Dictionary<ulong, PlayerMovement>();
@@ -75,6 +83,12 @@ public class PlayerMovement : NetworkTransform
             temp.y = 0.5f;
             transform.position = temp;
             m_Rigidbody = GetComponent<Rigidbody>();
+
+            var constants = GetComponent<PlayerConstants>();
+            
+            animator = constants.Animator;
+            playerHead = constants.PlayerHead;
+            
             m_TickFrequency = 1.0f / NetworkManager.NetworkTickSystem.TickRate;
         }
 
@@ -119,12 +133,24 @@ public class PlayerMovement : NetworkTransform
         }
         else
         {
+            var rotationHead = transform.rotation;
+            var eulerHead = rotationHead.eulerAngles;
+            eulerHead.x -= Input.GetAxis("Mouse Y") * 90 * RotSpeedY * Time.fixedDeltaTime;
+            rotationHead.eulerAngles = eulerHead;
+            transform.rotation = rotationHead;
+            
+            var inputX = Input.GetAxis("Vertical");
+            animator.SetBool("IsWalking", Mathf.Abs(inputX) > 0.5f);
+
             transform.position = Vector3.Lerp(transform.position, transform.position + Input.GetAxis("Vertical") * Speed * transform.forward, Time.fixedDeltaTime);
             var rotation = transform.rotation;
             var euler = rotation.eulerAngles;
-            euler.y += Input.GetAxis("Horizontal") * 90 * RotSpeed * Time.fixedDeltaTime;
+            euler.y += Input.GetAxis("Mouse X") * 90 * RotSpeed * Time.fixedDeltaTime;
             rotation.eulerAngles = euler;
             transform.rotation = rotation;
+            
+            if (Input.GetKey(KeyCode.Space))
+                m_Rigidbody.AddForce(transform.up * 1000);
 
             /// We store this to handle a collision rotation issue: <see cref="Teleport(Vector3, Quaternion, Vector3)"/>
             m_PreviousRotation = transform.rotation;
