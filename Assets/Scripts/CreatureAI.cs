@@ -44,26 +44,35 @@ public class CreatureAI : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(findTargetFrequency);
-            
-            var player = FindTarget("Player",  
-                _target != null 
-                && _target.Transform.CompareTag("Player") 
-                && DateTime.UtcNow.Subtract(_target.StartChaiseAt).TotalSeconds > maxPlayerChaiseInSeconds);
-            
-            var tree = FindTarget("Tree", 
-                _target != null 
-                &&  _target.Transform.CompareTag("Tree") 
-                && DateTime.UtcNow.Subtract(_target.StartChaiseAt).TotalSeconds > maxTreeChaiseInSeconds);
 
-            if (player == null)
-                _target = tree;
-            else if (tree == null)
-                _target = player;
-            else if (player.Distance < tree.Distance / 2)
-                _target = player;
-            // else if (player.Distance > tree.Distance * 3 && Random.Range(0f, 1f) < chanceToChoosePlayerAsTarget)
-            //     _target = player;
-            else _target = tree;
+            if (_target != null && _target.Transform == null)
+                _target = null;
+            
+            if (_target != null && _target.Transform.CompareTag("Player") &&
+                DateTime.UtcNow.Subtract(_target.StartChaiseAt).TotalSeconds > maxPlayerChaiseInSeconds)
+                _target = null;
+            
+            if (_target != null && _target.Transform.CompareTag("Tree") &&
+                DateTime.UtcNow.Subtract(_target.StartChaiseAt).TotalSeconds > maxTreeChaiseInSeconds)
+                _target = null;
+            
+            if(_target != null)
+                continue;
+
+            var nearlyPlayer = FindTarget("Player");
+            var nearlyTree = FindTarget("Tree");
+
+            if (nearlyPlayer != null && nearlyTree != null)
+                Debug.Log($"player: {nearlyPlayer.Distance} tree:{nearlyTree.Distance}");
+            
+            if (nearlyPlayer == null) _target = nearlyTree;
+            else if (nearlyTree == null) _target = nearlyPlayer;
+            else if (nearlyPlayer.Distance < nearlyTree.Distance / 2)
+                _target = nearlyPlayer;
+            else if (nearlyPlayer.Distance > nearlyTree.Distance * 3 
+                     && Random.Range(0f, 1f) < chanceToChoosePlayerAsTarget)
+                 _target = nearlyPlayer;
+            else _target = nearlyTree;
             
             if(_target != null)
                 _agent.SetDestination(_target.Transform.position);
@@ -71,21 +80,18 @@ public class CreatureAI : MonoBehaviour
     }
 
     [CanBeNull]
-    private TargetWithDistance FindTarget(string tag, bool forced = false)
+    private TargetWithDistance FindTarget(string tag)
     {
-        // keep target if not forced to chang
-        if (_target != null && !forced) 
-            return _target;
-        
         var playersAndTrees = GameObject.FindGameObjectsWithTag(tag).ToList();
         var targets = playersAndTrees.Select(x =>
             {
                 // check shortest distance
-                _agent.SetDestination(x.transform.position);
+                //_agent.SetDestination(x.transform.position);
                 return new TargetWithDistance()
                 {
                     Transform = x.transform,
-                    Distance = _agent.remainingDistance,
+                    //Distance = _agent.remainingDistance,
+                    Distance = Mathf.Abs(Vector3.Distance(transform.position, x.transform.position)),
                     StartChaiseAt = DateTime.UtcNow
                 };
             }).ToList();
@@ -106,7 +112,7 @@ public class CreatureAI : MonoBehaviour
         {
             yield return new WaitForSeconds(pathUpdateFrequency);
 
-            if (_target != null && !_target.Transform.gameObject.activeInHierarchy)
+            if (_target != null && (_target.Transform == null || !_target.Transform.gameObject.activeInHierarchy))
                 _target = null;
             
             if(_target != null)

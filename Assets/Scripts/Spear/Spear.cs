@@ -27,6 +27,10 @@ public class Spear : NetworkBehaviour
         
         if (Physics.Raycast(Head.position, transform.TransformDirection(Vector3.forward), out var hitInfo, HeadRaycastDistance))
         {
+            if(hitInfo.transform.CompareTag("DamageZone"))
+                return;
+            
+            
             Hit(hitInfo);
         }
 
