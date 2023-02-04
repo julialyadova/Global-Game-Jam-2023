@@ -10,7 +10,7 @@ using Random = UnityEngine.Random;
 public class CreatureAI : MonoBehaviour
 {
     [FormerlySerializedAs("MaxPlayerChaiseInSeconds")] 
-    public float maxPlayerChaiseInSeconds = 20;
+    public float maxPlayerChaiseInSeconds = 5;
  
     [FormerlySerializedAs("MaxTreeChaiseInSeconds")] 
     public float maxTreeChaiseInSeconds = 60;
@@ -62,12 +62,12 @@ public class CreatureAI : MonoBehaviour
             var nearlyPlayer = FindTarget("Player");
             var nearlyTree = FindTarget("Tree");
 
-            if (nearlyPlayer != null && nearlyTree != null)
-                Debug.Log($"player: {nearlyPlayer.Distance} tree:{nearlyTree.Distance}");
-            
+            // if (nearlyPlayer != null && nearlyTree != null)
+            //     Debug.Log($"player: {nearlyPlayer.Distance} tree:{nearlyTree.Distance}");
+            //
             if (nearlyPlayer == null) _target = nearlyTree;
             else if (nearlyTree == null) _target = nearlyPlayer;
-            else if (nearlyPlayer.Distance < nearlyTree.Distance / 2)
+            else if (nearlyPlayer.Distance < nearlyTree.Distance / 4)
                 _target = nearlyPlayer;
             else if (nearlyPlayer.Distance > nearlyTree.Distance * 3 
                      && Random.Range(0f, 1f) < chanceToChoosePlayerAsTarget)
