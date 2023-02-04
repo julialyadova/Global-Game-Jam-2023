@@ -234,6 +234,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c4f48f47559180a43a162170754e707c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _camera: {fileID: 3092378794916513865}
 --- !u!1 &8899994913386614119
 GameObject:
   m_ObjectHideFlags: 0
@@ -312,11 +313,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spearPrefab: {fileID: 5638755953236930751, guid: e6d002af9cab610498eb1c072d30555c, type: 3}
-  forceGrowSpeed: 18
-  minForce: 3
-  maxForce: 20
-  force:
-    m_InternalValue: 0
+  throwsPerSecond: 1
+  Force: 20
 --- !u!1001 &6603789944961113817
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -378,5 +376,10 @@ PrefabInstance:
 --- !u!4 &3092378794916513860 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8164755465470154397, guid: 964e333106fe44e438123c6602256f71, type: 3}
+  m_PrefabInstance: {fileID: 6603789944961113817}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &3092378794916513865 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8164755465470154384, guid: 964e333106fe44e438123c6602256f71, type: 3}
   m_PrefabInstance: {fileID: 6603789944961113817}
   m_PrefabAsset: {fileID: 0}
