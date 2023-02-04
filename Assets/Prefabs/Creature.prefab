@@ -17,6 +17,8 @@ GameObject:
   - component: {fileID: 415678595815775429}
   - component: {fileID: 7577101586299689945}
   - component: {fileID: 4831285431341595079}
+  - component: {fileID: 2127271863297674387}
+  - component: {fileID: 7662048852050608524}
   m_Layer: 0
   m_Name: Creature
   m_TagString: Untagged
@@ -190,4 +192,49 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8405642e60805b042b4933e7cfba4601, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  target: {fileID: 0}
+  maxPlayerChaiseInSeconds: 20
+  maxTreeChaiseInSeconds: 60
+  pathUpdateFrequency: 0.3
+  findTargetFrequency: 1
+  chanceToChoosePlayerAsTarget: 0.7
+--- !u!114 &2127271863297674387
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8301517917652696228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ba94328fe4254ae5a2df9ca817334ac9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _value:
+    m_InternalValue: 100
+  onDeath:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7662048852050608524}
+        m_TargetAssemblyTypeName: ObjectDespawner, Assembly-CSharp
+        m_MethodName: Despawn
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &7662048852050608524
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8301517917652696228}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1330744d2f2475b92baad9efe456bfe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

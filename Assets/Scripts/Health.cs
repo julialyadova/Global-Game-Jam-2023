@@ -1,9 +1,6 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using Unity.Netcode;
-using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Health : NetworkBehaviour
 {
@@ -11,6 +8,8 @@ public class Health : NetworkBehaviour
     private NetworkVariable<int> _value = new (100);
     public NetworkVariable<int> Value => _value;
 
+    public UnityEvent onDeath;
+    
     private void Start()
     {
         UpdateUiHealth(Value.Value);
@@ -41,7 +40,7 @@ public class Health : NetworkBehaviour
     {
         if (IsOwner && IsClient)
         {
-            GameUI.Singletone.SetHealth(value);
+            //GameUI.Singletone.SetHealth(value);
             // TODO: Update UI code?
         }
     }
@@ -51,12 +50,17 @@ public class Health : NetworkBehaviour
         //Health should be modified server-side only
         if (IsServer)
         {
-            Value.Value -= amount;
+            var oldValue = Value.Value;
+            var newValue = oldValue - amount;
         
-            if (Value.Value <= 0)
+            if (newValue <= 0)
             {
-                Value.Value = 0;
+                newValue = 0;
+                
+                onDeath.Invoke();
             }
+
+            Value.Value = newValue;
         }
     }
 }
