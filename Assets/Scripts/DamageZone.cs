@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.Serialization;
 
 public class DamageZone : MonoBehaviour
 {
@@ -14,6 +16,8 @@ public class DamageZone : MonoBehaviour
 
     private Dictionary<Collider, Health> _objectsInZone 
         = new Dictionary<Collider, Health>();
+
+    public UnityEvent onDamage;
 
     // Start is called before the first frame update
     void Start()
@@ -31,6 +35,8 @@ public class DamageZone : MonoBehaviour
             if (buffer.Length == 0) continue;
             
             // Debug.Log($"Buffer has {buffer.Length} elements");
+            
+            onDamage.Invoke();
             
             foreach (var item in buffer)
                 item.TakeDamage(damageAmountPerCall);
