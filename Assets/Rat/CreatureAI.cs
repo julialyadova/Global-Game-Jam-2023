@@ -4,6 +4,7 @@ using System.Linq;
 using JetBrains.Annotations;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Events;
 using UnityEngine.Serialization;
 using Random = UnityEngine.Random;
 
@@ -27,6 +28,9 @@ public class CreatureAI : MonoBehaviour
 
     [FormerlySerializedAs("ChanceToChoosePlayerAsTarget")] 
     public float chanceToChoosePlayerAsTarget = 0.70f;
+
+    public UnityAction FoundTarget;
+    public UnityAction NoTarget;
     
     void Awake()    
     {
@@ -62,9 +66,9 @@ public class CreatureAI : MonoBehaviour
             var nearlyPlayer = FindTarget("Player");
             var nearlyTree = FindTarget("Tree");
 
-            // if (nearlyPlayer != null && nearlyTree != null)
-            //     Debug.Log($"player: {nearlyPlayer.Distance} tree:{nearlyTree.Distance}");
-            //
+            if (nearlyPlayer != null && nearlyTree != null)
+                 Debug.Log($"player: {nearlyPlayer.Distance} tree:{nearlyTree.Distance}");
+            
             if (nearlyPlayer == null) _target = nearlyTree;
             else if (nearlyTree == null) _target = nearlyPlayer;
             else if (nearlyPlayer.Distance < nearlyTree.Distance / 4)
