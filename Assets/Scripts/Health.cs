@@ -4,14 +4,16 @@ using UnityEngine.Events;
 
 public class Health : NetworkBehaviour
 {
+    private int _maxHealth;
     [SerializeField]
     private NetworkVariable<int> _value = new (100);
     public NetworkVariable<int> Value => _value;
 
     public UnityEvent onDeath;
-    
+    public UnityEvent<HealthChangedEventArgs> onHealthChanged;
     private void Start()
     {
+        _maxHealth = _value.Value;
         UpdateUiHealth(Value.Value);
     }
 
@@ -53,6 +55,8 @@ public class Health : NetworkBehaviour
             var oldValue = Value.Value;
             var newValue = oldValue - amount;
         
+            onHealthChanged.Invoke(new HealthChangedEventArgs(oldValue, newValue, _maxHealth));
+            
             if (newValue <= 0)
             {
                 newValue = 0;
@@ -62,5 +66,20 @@ public class Health : NetworkBehaviour
 
             Value.Value = newValue;
         }
+    }
+}
+
+
+public struct HealthChangedEventArgs
+{
+    public readonly int OldValue;
+    public readonly int NewValue;
+    public readonly int MaxHealth;
+
+    public HealthChangedEventArgs(int oldValue, int newValue, int maxHealth)
+    {
+        OldValue = oldValue;
+        NewValue = newValue;
+        MaxHealth = maxHealth;
     }
 }
