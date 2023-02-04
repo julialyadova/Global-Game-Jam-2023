@@ -14,7 +14,7 @@ public class Health : NetworkBehaviour
     private void Start()
     {
         _maxHealth = _value.Value;
-        UpdateUiHealth(Value.Value);
+        UpdateUiHealth(Value.Value, Value.Value);
     }
 
     void OnEnable()
@@ -33,12 +33,13 @@ public class Health : NetworkBehaviour
 
     void OnHealthChanged(int oldValue, int newValue)
     {
+        onHealthChanged.Invoke(new HealthChangedEventArgs(oldValue, newValue, _maxHealth));
         // Update UI, if this a client instance and it's the owner of the object
-        UpdateUiHealth(newValue);
+        UpdateUiHealth(oldValue, newValue);
         Debug.LogFormat("{0} has {1} health!", gameObject.name, _value.Value);
     }
 
-    public void UpdateUiHealth(int value)
+    public void UpdateUiHealth(int oldValue, int newValue)
     {
         if (IsOwner && IsClient)
         {
@@ -55,8 +56,6 @@ public class Health : NetworkBehaviour
             var oldValue = Value.Value;
             var newValue = oldValue - amount;
         
-            onHealthChanged.Invoke(new HealthChangedEventArgs(oldValue, newValue, _maxHealth));
-            
             if (newValue <= 0)
             {
                 newValue = 0;
