@@ -4,13 +4,10 @@ using UnityEngine;
 
 public class Tree : MonoBehaviour
 {
-    void Start()
+    public GameObject Leaves;
+
+    public void onDeath()
     {
-        
-    }
-    
-    void Update()
-    {
-        
+        Leaves.SetActive(false);
     }
 }
