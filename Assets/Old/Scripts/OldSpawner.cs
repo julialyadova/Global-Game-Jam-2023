@@ -3,7 +3,7 @@ using System.Collections;
 using Unity.Netcode;
 using UnityEngine;
 
-public class Spawner : MonoBehaviour
+public class OldSpawner : MonoBehaviour
 {
     public GameObject Prefab;
     public float Frequency;
