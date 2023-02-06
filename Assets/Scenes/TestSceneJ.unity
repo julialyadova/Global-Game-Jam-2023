@@ -634,8 +634,7 @@ MonoBehaviour:
   Spawner: {fileID: 632382878}
   SpawnDelay: 0.2
   WavesDelay: 1
-  WavesCount: 2
-  EnemiesPerWave: 0200000004000000
+  Waves: 
   WaveNumber: 0
   EnemiesInWave: 0
   EnemiesRemained: 0
@@ -735,7 +734,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 632382877}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bfc65e73f5754e84bd1c08338d0bcfc4, type: 3}
+  m_Script: {fileID: 11500000, guid: 2331b46767f77f84fb15792087be9534, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   Prefab: {fileID: 4150657290458050956, guid: 03f871938b896ca48972bb65dd81091d, type: 3}
